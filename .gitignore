@@ -1,7 +1,12 @@
+# macOS system files
 .DS_Store
 
+# Environment configuration files
 .env
+
+# Python virtual environment directories
 .venv/
 venv/
 
+# Directories for uploaded files
 uploads/

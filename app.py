@@ -14,8 +14,11 @@ if "messages" not in st.session_state:
 if "model" not in st.session_state:
     st.session_state.model = []
 
+# page config
+st.set_page_config(page_title="PaperPal")
+
 # App Title
-st.title("Review Right 🎯")
+st.title("PaperPal: Your friendly AI for navigating documents and contracts. 📑")
 
 # Sidebar Title
 st.sidebar.title("Contract Files")
