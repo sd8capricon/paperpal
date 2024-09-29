@@ -51,7 +51,7 @@ if len(contracts) > 0 and not st.session_state.files_processed:
         time.sleep(0.5)
     main_plaeceholder.text("Creating Chunks and Vector Store...")
     pdfs = load_pdfs(contracts, "uploads")
-    model = Analyzer(pdfs)
+    model = Analyzer(pdfs, model="gemini-1.5-pro")
     st.session_state.model = model
     main_plaeceholder.text("Files Processed...✅ ✅ ✅")
     time.sleep(1)

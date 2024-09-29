@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+from typing import Literal
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain.chains import RetrievalQAWithSourcesChain
@@ -16,14 +17,19 @@ class Analyzer:
         chunk_overlap=200,
     )
     embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
-    llm = ChatGoogleGenerativeAI(temperature=0, model="gemini-1.5-flash")
 
-    def __init__(self, pdfs) -> None:
+    def __init__(
+        self,
+        pdfs,
+        model: Literal["gemini-1.5-pro", "gemini-1.5-flash"],
+        temperature=0,
+    ) -> None:
         self.chunks = self.__get_chunks(pdfs)
         self.vector_store = self.__get_vector_store(
             self.chunks,
             embeddings=self.embeddings,
         )
+        self.llm = ChatGoogleGenerativeAI(temperature=temperature, model=model)
         self.chain = RetrievalQAWithSourcesChain.from_llm(
             llm=self.llm,
             max_tokens_limit=int(self.max_tokens_per_min),
