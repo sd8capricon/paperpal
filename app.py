@@ -83,8 +83,8 @@ if query:
         st.session_state.messages.append({"role": "human", "content": query})
 
         # Append assistant response
-        answer, sources = st.session_state.model.invoke(query)
-        md = f"{answer}  \nSources: {sources}"
+        answer, chat_history = st.session_state.model.invoke(query)
+        md = f"{answer}"
         st.session_state.messages.append({"role": "assistant", "content": md})
     else:
         st.chat_message("assistant").write(
