@@ -2,7 +2,7 @@ import os
 import time
 import streamlit as st
 from utils import load_pdfs, clear_directory
-from analyzers import AnalyzerQA
+from analyzers import AnalyzerRAG
 
 # Initialize a session state variable to track file processing status
 if "files_processed" not in st.session_state:
@@ -12,7 +12,7 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 # Initialize session state to model
 if "model" not in st.session_state:
-    st.session_state.model = []
+    st.session_state.model = AnalyzerRAG(model="gemini-1.5-flash", temperature=0)
 
 # page config
 st.set_page_config(page_title="PaperPal")
@@ -56,19 +56,23 @@ if len(contracts) > 0 and not st.session_state.files_processed:
     main_plaeceholder.text("Creating Chunks and Vector Store...")
     pdfs = load_pdfs(contracts, "uploads")
     # Load Analyzer
-    st.session_state.model = AnalyzerQA(pdfs, model="gemini-1.5-pro")
+    st.session_state.model.vectorize_pdfs(pdfs)
+    main_plaeceholder.text("Initializing Chains...")
+    st.session_state.model.initialize_chains()
+    time.sleep(1)
     main_plaeceholder.text("Files Processed...✅ ✅ ✅")
     time.sleep(1)
     # Run Risk Review Query
     main_plaeceholder.text("Running Risk Review ❗️")
     initial_query = """
         For each contract
-        Detect potential risks in the contract.
+        Detect potential risks.
+        For each risk give its source document name.
         """
-    answer, sources = st.session_state.model.invoke(query=initial_query)
+    answer, chat_history = st.session_state.model.invoke(query=initial_query)
     main_plaeceholder.text("Review Complete ✅")
     # Response Markdown
-    md = f"Hi there 👋 this is the risk review of your documents  \n{answer}  \nYou can further assess the liabilities or specfic clauses within the documents  \nSources: {sources}"
+    md = f"Hi there 👋 this is the risk review of your documents  \n{answer}  \nYou can further assess the liabilities or specfic clauses within the documents"
     # st.chat_message("assistant").markdown(md)
     st.session_state.messages.append({"role": "assistant", "content": md})
     st.session_state.files_processed = True
