@@ -2,7 +2,7 @@ import os
 import time
 import streamlit as st
 from utils import load_pdfs, clear_directory
-from analyzer import Analyzer
+from analyzers import AnalyzerQA
 
 # Initialize a session state variable to track file processing status
 if "files_processed" not in st.session_state:
@@ -56,8 +56,7 @@ if len(contracts) > 0 and not st.session_state.files_processed:
     main_plaeceholder.text("Creating Chunks and Vector Store...")
     pdfs = load_pdfs(contracts, "uploads")
     # Load Analyzer
-    model = Analyzer(pdfs, model="gemini-1.5-pro")
-    st.session_state.model = model
+    st.session_state.model = AnalyzerQA(pdfs, model="gemini-1.5-pro")
     main_plaeceholder.text("Files Processed...✅ ✅ ✅")
     time.sleep(1)
     # Run Risk Review Query
@@ -66,7 +65,7 @@ if len(contracts) > 0 and not st.session_state.files_processed:
         For each contract
         Detect potential risks in the contract.
         """
-    answer, sources = model.invoke(query=initial_query)
+    answer, sources = st.session_state.model.invoke(query=initial_query)
     main_plaeceholder.text("Review Complete ✅")
     # Response Markdown
     md = f"Hi there 👋 this is the risk review of your documents  \n{answer}  \nYou can further assess the liabilities or specfic clauses within the documents  \nSources: {sources}"

@@ -9,7 +9,7 @@ from langchain.vectorstores import FAISS
 load_dotenv()
 
 
-class Analyzer:
+class AnalyzerQA:
     max_tokens_per_min = 1e6
     text_splitter = RecursiveCharacterTextSplitter(
         separators=["\n", "\n\n", "."],
