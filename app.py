@@ -53,9 +53,11 @@ if len(contracts) > 0 and not st.session_state.files_processed:
         file_upload_text = file_upload_text + f"Uploaded File:{contract.name}\n"
         main_plaeceholder.text(file_upload_text)
         time.sleep(0.5)
+
     # Load pdfs in readable format
     main_plaeceholder.text("Creating Chunks and Vector Store...")
     pdfs = load_pdfs(contracts, "uploads")
+
     # Load Analyzer
     st.session_state.model.vectorize_pdfs(pdfs)
     main_plaeceholder.text("Initializing Chains...")
@@ -63,6 +65,7 @@ if len(contracts) > 0 and not st.session_state.files_processed:
     time.sleep(1)
     main_plaeceholder.text("Files Processed...✅ ✅ ✅")
     time.sleep(1)
+
     # Run Risk Review Query
     main_plaeceholder.text("Running Risk Review ❗️")
     initial_query = """
@@ -71,6 +74,7 @@ if len(contracts) > 0 and not st.session_state.files_processed:
     """
     answer, chat_history = st.session_state.model.invoke(query=initial_query)
     main_plaeceholder.text("Review Complete ✅")
+
     # Response Markdown
     md = f"Hi there 👋 this is the risk review of your documents  \n{answer}  \nYou can further assess the liabilities or specfic clauses within the documents"
     st.session_state.model.chat_history[1].content = md
