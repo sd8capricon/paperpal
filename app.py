@@ -13,7 +13,7 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 # Initialize session state to model
 if "model" not in st.session_state:
-    st.session_state.model = AnalyzerRAG(model="gemini-1.5-flash", temperature=0)
+    st.session_state.model = AnalyzerRAG(model="gemini-1.5-pro", temperature=0)
 
 # page config
 st.set_page_config(page_title="PaperPal", page_icon=":bookmark_tabs:")
@@ -42,7 +42,7 @@ query = st.chat_input(
 
 if len(contracts) == 0:
     st.session_state.files_processed = False
-    st.session_state.messages = []
+    st.session_state.model = AnalyzerRAG(model="gemini-1.5-pro", temperature=0)
     clear_directory("uploads")
 
 if len(contracts) > 0 and not st.session_state.files_processed:
