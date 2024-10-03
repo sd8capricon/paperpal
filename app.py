@@ -17,6 +17,7 @@ if "model" not in st.session_state:
 
 # page config
 st.set_page_config(page_title="PaperPal", page_icon=":bookmark_tabs:")
+st.config.set_option("server.maxUploadSize", 10)
 
 # App Title
 st.title("PaperPal: Your friendly AI for navigating contracts. 📑")
