@@ -16,7 +16,7 @@ if "model" not in st.session_state:
     st.session_state.model = AnalyzerRAG(model="gemini-1.5-flash", temperature=0)
 
 # page config
-st.set_page_config(page_title="PaperPal")
+st.set_page_config(page_title="PaperPal", page_icon=":bookmark_tabs:")
 
 # App Title
 st.title("PaperPal: Your friendly AI for navigating contracts. 📑")
