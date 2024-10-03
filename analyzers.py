@@ -70,17 +70,6 @@ class AnalyzerRAG:
             )
         self.llm = ChatGoogleGenerativeAI(temperature=temperature, model=model)
 
-        # Chains
-        # history_aware_retriever = create_history_aware_retriever(
-        #     self.llm,
-        #     self.vector_store.as_retriever(),
-        #     self.__contextualize_q_prompt,
-        # )
-        # question_answer_chain = create_stuff_documents_chain(self.llm, self.__qa_prompt)
-        # self.rag_chain = create_retrieval_chain(
-        #     history_aware_retriever, question_answer_chain
-        # )
-
     def __get_chunks(self, pdfs):
         chunks = []
         for pdf in pdfs:
